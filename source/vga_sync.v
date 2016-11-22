@@ -20,7 +20,7 @@ module vga_sync
 	localparam V_B_BORDER      =  33; // vertical bottom border
 	localparam V_RETRACE       =   2; // vertical retrace
 	localparam V_MAX           = V_DISPLAY + V_T_BORDER + V_B_BORDER + V_RETRACE - 1;
-    localparam START_V_RETRACE = V_DISPLAY + V_B_BORDER;
+        localparam START_V_RETRACE = V_DISPLAY + V_B_BORDER;
 	localparam END_V_RETRACE   = V_DISPLAY + V_B_BORDER + V_RETRACE - 1;
 	
 	// mod-2 counter to generate 25 MHz pixel tick
@@ -49,17 +49,17 @@ module vga_sync
 	always @(posedge clk, posedge reset)
 		if(reset)
 			begin
-            v_count_reg <= 0;
-            h_count_reg <= 0;
-            vsync_reg   <= 0;
-            hsync_reg   <= 0;
+           		v_count_reg <= 0;
+            		h_count_reg <= 0;
+            		vsync_reg   <= 0;
+            		hsync_reg   <= 0;
 			end
 		else
 			begin
-            v_count_reg <= v_count_next;
-            h_count_reg <= h_count_next;
-            vsync_reg   <= vsync_next;
-            hsync_reg   <= hsync_next;
+            		v_count_reg <= v_count_next;
+            		h_count_reg <= h_count_next;
+            		vsync_reg   <= vsync_next;
+            		hsync_reg   <= hsync_next;
 			end
 			
 	// next-state logic of horizontal vertical sync counters
@@ -67,11 +67,11 @@ module vga_sync
 		begin
 		h_count_next = pixel_tick ? 
 		               h_count_reg == H_MAX ? 0 : h_count_reg + 1
-					   : h_count_reg;
+			       : h_count_reg;
 		
 		v_count_next = pixel_tick && h_count_reg == H_MAX ? 
 		               (v_count_reg == V_MAX ? 0 : v_count_reg + 1) 
-					   : v_count_reg;
+			       : v_count_reg;
 		end
 		
    // hsync and vsync are active low signals
