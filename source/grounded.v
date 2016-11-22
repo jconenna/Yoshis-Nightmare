@@ -3,8 +3,8 @@ module grounded
         input wire clk, reset,     // clock, reset signals for synchrnous registers
         input wire [9:0] y_x, y_y, // current pixel coordinates from vga_sync circuit
         input wire jumping_up,     // input signal asserted when yoshi is in jumping_up state
-		input wire direction,       // input signal conveying yoshi's direction
-		output wire grounded       // output signal asserted when yoshi is in contact with a platform 
+	input wire direction,       // input signal conveying yoshi's direction
+	output wire grounded       // output signal asserted when yoshi is in contact with a platform 
     );
    
     // constant declarations
@@ -21,31 +21,31 @@ module grounded
    
     // difference in head and torso tile placement in x dimension (see diagram)
     localparam X_D   = 9;
-	localparam LA    = 19;
-	localparam LB    = 13;
-	localparam RA    = 11;
-	localparam RB    =  5;
-	localparam LEFT  =  0;
-	localparam RIGHT =  1;
+    localparam LA    = 19;
+    localparam LB    = 13;
+    localparam RA    = 11;
+    localparam RB    =  5;
+    localparam LEFT  =  0;
+    localparam RIGHT =  1;
 	
-	// register for grounded signal
-	reg grounded_reg, grounded_next;
+    // register for grounded signal
+    reg grounded_reg, grounded_next;
 	
-	// infer grounded signal
-	always @(posedge clk, posedge reset)
-		if(reset)
-			grounded_reg <= 1;
-		else
-			grounded_reg <= grounded_next;
+    // infer grounded signal
+    always @(posedge clk, posedge reset)
+	if(reset)
+		grounded_reg <= 1;
+	else
+		grounded_reg <= grounded_next;
 	
-	// next-state logic for grounded signal
-	always @*
+    // next-state logic for grounded signal
+    always @*
 		begin
 		// default
 		grounded_next = grounded_reg;
 		
 		// yoshi is allowed to jump up over a platform and then land on it,
-        // only assert grounded when not jumping_up.
+        	// only assert grounded when not jumping_up.
 		// check if yoshi is on each platform, if so change grounded signal to be asserted
 		if(!jumping_up)
 			begin
