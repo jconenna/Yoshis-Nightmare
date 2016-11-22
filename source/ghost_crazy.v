@@ -2,11 +2,11 @@ module ghost_crazy
     (
         input wire clk, reset,
         input wire [9:0] y_x, y_y,         // current pixel location of yoshi
-		input wire [9:0] x, y,             // current pixel coordinates from vga_sync circuit
-		input wire [25:0] speed_offset,    // score dependent value that increases ghost's speed
-		output wire [9:0] g_c_x, g_c_y,    // output vector for ghost_crazy's x/y position
+	input wire [9:0] x, y,             // current pixel coordinates from vga_sync circuit
+	input wire [25:0] speed_offset,    // score dependent value that increases ghost's speed
+	output wire [9:0] g_c_x, g_c_y,    // output vector for ghost_crazy's x/y position
         output ghost_crazy_on,             // on signal: vga pixel within sprite location
-		output wire [11:0] rgb_out         // output rgb signal for current pixel
+	output wire [11:0] rgb_out         // output rgb signal for current pixel
     );
    
     // constant declarations
@@ -26,7 +26,7 @@ module ghost_crazy
    
     // infer registers for sprite location
     always @(posedge clk)
-		begin
+	begin
         s_x_reg     <= s_x_next;
         s_y_reg     <= s_y_next;
         end
@@ -57,7 +57,7 @@ module ghost_crazy
             dir_next = RIGHT;
         end
     
-	/***********************************************************************************/
+    /***********************************************************************************/
     /*                                sprite motion                                    */  
     /***********************************************************************************/
 	  
@@ -66,22 +66,22 @@ module ghost_crazy
     reg [25:0] time_reg;  // register to keep track of count time between position updates
 	wire [25:0] time_next;     
    
-	// infer time register
-	always @(posedge clk, posedge reset)
-		if(reset)
-			time_reg <= 0;
-		else
-			time_reg <= time_next;
+    // infer time register
+    always @(posedge clk, posedge reset)
+	if(reset)
+		time_reg <= 0;
+	else
+		time_reg <= time_next;
 	
-	// next-state logic, increment until maximum, then reset to 0
-	assign time_next = (time_reg < TIME_MAX - speed_offset) ? time_reg + 1 : 0;
+    // next-state logic, increment until maximum, then reset to 0
+    assign time_next = (time_reg < TIME_MAX - speed_offset) ? time_reg + 1 : 0;
 			
-	// tick signal is asserted when time reg reaches max
-	wire tick;
-	assign tick = (time_reg == TIME_MAX - speed_offset) ? 1 : 0;
+    // tick signal is asserted when time reg reaches max
+    wire tick;
+    assign tick = (time_reg == TIME_MAX - speed_offset) ? 1 : 0;
 	
-	// on positive edge of tick signal, or reset, update ghost location 
-	always @(posedge tick, posedge reset)
+    // on positive edge of tick signal, or reset, update ghost location 
+    always @(posedge tick, posedge reset)
 		begin
 		//defaults
 		s_x_next = s_x_reg;
@@ -110,25 +110,25 @@ module ghost_crazy
     /*                                     ROM indexing                                */  
     /***********************************************************************************/  
 
-	// register, next-state logic to oscillate face tile 
-	reg [24:0] face_t_reg;
-	wire [24:0] face_t_next;
+    // register, next-state logic to oscillate face tile 
+    reg [24:0] face_t_reg;
+    wire [24:0] face_t_next;
 	
-	// rom index offset reg
-	wire [6:0] face_type;
+    // rom index offset reg
+    wire [6:0] face_type;
 	
-	// infer face_t register
-	always @(posedge clk, posedge reset)
+    // infer face_t register
+    always @(posedge clk, posedge reset)
 		if(reset)
 			face_t_reg <= 0;
 		else 
 			face_t_reg <= face_t_next;
 	
-	// increment face_t until max value
-	assign face_t_next = (face_t_reg < 25000000)? face_t_reg + 1 : 0;
-	
-	// assign rom index offset, half time between face tiles
-	assign face_type = (face_t_reg < 12500000)? 0 : 16;
+    // increment face_t until max value
+    assign face_t_next = (face_t_reg < 25000000)? face_t_reg + 1 : 0;
+
+    // assign rom index offset, half time between face tiles
+    assign face_type = (face_t_reg < 12500000)? 0 : 16;
 				   
     // sprite coordinate addreses, from upper left corner
     // used to index ROM data
@@ -136,31 +136,31 @@ module ghost_crazy
     wire [4:0] row;
    
     // current pixel coordinate minus current sprite coordinate gives ROM index
-	// col index value depends on direction
+    // col index value depends on direction
     assign col = dir_reg == RIGHT ? x - s_x_reg : (T_W - 1 - (x - s_x_reg));   
-	// row index value depends on offset for which tile to display
+    // row index value depends on offset for which tile to display
     assign row = y + face_type - s_y_reg;
    
     // vector for ROM color_data output
     wire [11:0] color_data;
 	
-	// infer sprite rom
-	ghost_crazy_rom ghost_crazy_unit (.clk, .row(row), .col(col), .color_data(color_data));
+    // infer sprite rom
+    ghost_crazy_rom ghost_crazy_unit (.clk, .row(row), .col(col), .color_data(color_data));
    
     // signal asserted when x/y VGA pixel values are within sprite in current location
     wire ghost_on;
-	assign ghost_on = (x >= s_x_reg && x < s_x_reg + 16 
-					&& y >= s_y_reg && y < s_y_reg + 16)? 1 : 0;
+    assign ghost_on = (x >= s_x_reg && x < s_x_reg + 16 
+		       && y >= s_y_reg && y < s_y_reg + 16)? 1 : 0;
 	
-	// assert output on signal when VGA x/y pixels are within sprite
-	// and location rgb value isn't sprite background color
-	assign ghost_crazy_on = ghost_on && color_data != 12'b011011011110 ? 1 : 0;
+    // assert output on signal when VGA x/y pixels are within sprite
+    // and location rgb value isn't sprite background color
+    assign ghost_crazy_on = ghost_on && color_data != 12'b011011011110 ? 1 : 0;
 	
-	// route color_data out
+    // route color_data out
     assign rgb_out = color_data; 
 	
-	// route x/y location out
-	assign g_c_x = s_x_reg;
-	assign g_c_y = s_y_reg;
+    // route x/y location out
+    assign g_c_x = s_x_reg;
+    assign g_c_y = s_y_reg;
 	
 endmodule
