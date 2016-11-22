@@ -4,18 +4,18 @@ module nes_controller
 		input wire data,                                        // input data from nes controller to FPGA
 		output reg latch, nes_clk,                              // outputs from FPGA to nes controller
 		output wire A, B, select, start, up, down, left, right  // output states of nes controller buttons
-    );
+        );
 	
 	// FSM symbolic states
 	localparam [3:0] latch_en     = 4'h0,  // assert latch for 12 us
-					 read_A_wait  = 4'h1,  // read A / wait 6 us
-					 read_B       = 4'h2,  // read B ...
-					 read_select  = 4'h3,  
-					 read_start   = 4'h4,
-					 read_up      = 4'h5,
-					 read_down    = 4'h6,
-					 read_left    = 4'h7,
-					 read_right   = 4'h8;
+			 read_A_wait  = 4'h1,  // read A / wait 6 us
+			 read_B       = 4'h2,  // read B ...
+			 read_select  = 4'h3,  
+		         read_start   = 4'h4,
+		         read_up      = 4'h5,
+			 read_down    = 4'h6,
+			 read_left    = 4'h7,
+			 read_right   = 4'h8;
 
 	// register to count clock cycles to time latch assertion, nes_clk state, and FSM state transitions		 
 	reg [10:0] count_reg, count_next;
@@ -23,9 +23,9 @@ module nes_controller
 	// FSM state register, and button state regs
 	reg [3:0] state_reg, state_next;
 	reg A_reg, B_reg, select_reg, start_reg,
-		up_reg, down_reg, left_reg, right_reg;
+	    up_reg, down_reg, left_reg, right_reg;
 	reg A_next, B_next, select_next, start_next,
-		up_next, down_next, left_next, right_next;
+	   up_next, down_next, left_next, right_next;
 	
 	// infer all the registers
 	always @(posedge clk, posedge reset)
@@ -44,7 +44,7 @@ module nes_controller
 			end
 	    else
 			begin
-		    count_reg  <= count_next;
+		        count_reg  <= count_next;
 			state_reg  <= state_next;
 			A_reg      <= A_next;
 			B_reg      <= B_next;
@@ -60,7 +60,6 @@ module nes_controller
 	always@*
 		begin
 		// defaults
-		
 		latch       = 0;
 		nes_clk     = 0;
 		count_next  = count_reg;
@@ -83,7 +82,7 @@ module nes_controller
 					
 					// count 12 us
 					if(count_reg < 1200)
-					count_next = count_reg + 1;
+						count_next = count_reg + 1;
 					
 					// once 12 us passed
 					else if(count_reg == 1200)
