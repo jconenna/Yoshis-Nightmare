@@ -91,28 +91,28 @@ module ghost_bottom
 		s_x_next = s_x_reg;
 		
 		if(reset)
-			s_x_next = 620;             // reset to starting x position
-		else if(y_y >= 297)         // if yoshi is in bottom portion of screen, ghost_B can chase
+			s_x_next = 620;            	 // reset to starting x position
+		else if(y_y >= 297)         		// if yoshi is in bottom portion of screen, ghost_B can chase
 			begin
-			if(s_x_reg > y_x)       // if ghost x pos > yoshi
+			if(s_x_reg > y_x)       	// if ghost x pos > yoshi
 				s_x_next = s_x_reg - 1; // move negative x
-			else if(s_x_reg < y_x)  // else if ghost x pos < yoshi
+			else if(s_x_reg < y_x)  	// else if ghost x pos < yoshi
 				s_x_next = s_x_reg + 1; // move positive x
 			end
 		else 
-			s_x_next = s_x_reg;         // else remain the same
+			s_x_next = s_x_reg;         	// else remain the same
 			
 		if(reset)
-			s_y_next = 460;             // reset to starting y position
-		else if(y_y >= 297)         // if yoshi is in bottom portion of screen, ghost_B can chase
+			s_y_next = 460;           	// reset to starting y position
+		else if(y_y >= 297)         		// if yoshi is in bottom portion of screen, ghost_B can chase
 			begin
-			if(s_y_reg > y_y)       // if ghost y pos > yoshi
+			if(s_y_reg > y_y)       	// if ghost y pos > yoshi
 				s_y_next = s_y_reg - 1; // move negative y
-			else if(s_y_reg < y_y)  // else if ghost y pos < yoshi
+			else if(s_y_reg < y_y)  	// else if ghost y pos < yoshi
 				s_y_next = s_y_reg + 1; // move positive y
 			end
 		else 
-			s_y_next = s_y_reg;         // else remain the same
+			s_y_next = s_y_reg;             // else remain the same
 		end      
     
     /***********************************************************************************/
