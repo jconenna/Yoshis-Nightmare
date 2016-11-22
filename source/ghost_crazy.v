@@ -89,18 +89,18 @@ module ghost_crazy
 		
 		if(reset)
 			s_x_next = 17;          // reset to starting x position
-		else if(s_x_reg > y_x)  // if ghost x pos > yoshi
+		else if(s_x_reg > y_x)  	// if ghost x pos > yoshi
 			s_x_next = s_x_reg - 1; // move negative x
-		else if(s_x_reg < y_x)  // else if ghost x pos < yoshi
+		else if(s_x_reg < y_x)  	// else if ghost x pos < yoshi
 			s_x_next = s_x_reg + 1; // move positive x 
 		else 
 			s_x_next = s_x_reg;     // else remain the same
 		
 		if(reset)
 			s_y_next = 17;          // reset to starting y position
-		else if(s_y_reg > y_y)  // if ghost y pos > yoshi
+		else if(s_y_reg > y_y)  	// if ghost y pos > yoshi
 			s_y_next = s_y_reg - 1; // move negative y
-		else if(s_y_reg < y_y)  // else if ghost y pos < yoshi
+		else if(s_y_reg < y_y)  	// else if ghost y pos < yoshi
 			s_y_next = s_y_reg + 1; // move positive y
 		else 
 			s_y_next = s_y_reg;     // else remain the same
