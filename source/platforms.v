@@ -15,9 +15,9 @@ module platforms
 	
 	walls_rom walls_unit (.clk(clk), .row(row[4:0]), .col(col), .color_data(walls_color_data));
 	
-    blocks_rom blocks_unit (.clk(clk), .row(row), .col(col), .color_data(blocks_color_data));
+    	blocks_rom blocks_unit (.clk(clk), .row(row), .col(col), .color_data(blocks_color_data));
 	
-    localparam offset = 16; // determines block tiles used
+    	localparam offset = 16; // determines block tiles used
 	
 	// always block to set rom index regs row/col, rgb_out, and platforms_on, depending on input x/y
 	always @*
