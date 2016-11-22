@@ -1,13 +1,13 @@
 module score_display
 	(	
 	    input wire clk, reset,   // clock, reset signal inputs for synchronous roms and registers
-		input wire new_score,    // input wire asserted when eggs module increments score
-		input wire [13:0] score, // current score routed in from eggs module
-		input wire [9:0] x, y,   // vga x/y pixel location
-		output reg [7:0] sseg,   // output seven-segment signals
-		output reg [3:0] an,     // output seven-segment digit enable signals
-		output reg score_on      // output asserted when x/y are within score location in display
-    );	
+	    input wire new_score,    // input wire asserted when eggs module increments score
+	    input wire [13:0] score, // current score routed in from eggs module
+	    input wire [9:0] x, y,   // vga x/y pixel location
+	    output reg [7:0] sseg,   // output seven-segment signals
+	    output reg [3:0] an,     // output seven-segment digit enable signals
+	    output reg score_on      // output asserted when x/y are within score location in display
+        );	
 	
 	// route bcd values out from binary to bcd conversion circuit
 	wire [3:0] bcd3, bcd2, bcd1, bcd0;
@@ -19,14 +19,14 @@ module score_display
 	// *** seven-segment score display ***
 	
 	// seven-segment output decoding circuit
-    // register to route either units or tenths value to decoding circuit
-    reg [3:0] decode_reg, decode_next;
+    	// register to route either units or tenths value to decoding circuit
+        reg [3:0] decode_reg, decode_next;
         
-    // infer decode value register
-    always @(posedge clk, posedge reset)
-	if(reset)
+        // infer decode value register
+        always @(posedge clk, posedge reset)
+	    if(reset)
 		decode_reg <= 0;
-	else 
+	    else 
 		decode_reg <= decode_next;
 	
 	// decode value_reg to sseg outputs
@@ -60,22 +60,22 @@ module score_display
 		case (m_count_reg[16:15])
 			0: begin
 			   an = 4'b1110;
-               decode_next = bcd0;
-               end
+               		   decode_next = bcd0;
+                           end
 			1: begin
-               an = 4'b1101;
-               decode_next = bcd1;
-               end    
+               		   an = 4'b1101;
+                           decode_next = bcd1;
+                           end    
                     
-            2: begin
-               an = 4'b1011;
-               decode_next = bcd2;
-               end
+            		2: begin
+                           an = 4'b1011;
+                           decode_next = bcd2;
+                           end
                     
-            3: begin
-               an = 4'b0111;
-               decode_next = bcd3;
-               end 
+            		3: begin
+                           an = 4'b0111;
+                           decode_next = bcd3;
+                           end 
 		endcase
 	
 	// *** on screen score display ***
