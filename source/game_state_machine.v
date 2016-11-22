@@ -1,12 +1,13 @@
 module game_state_machine
-	(	input wire clk, hard_reset,   // clock and reset inputs for synchronous registers
+	(	
+		input wire clk, hard_reset,   // clock and reset inputs for synchronous registers
 		input wire start,             // start button signal input
-        input wire collision,         // collision detection signal input
+        	input wire collision,         // collision detection signal input
 		output wire [1:0] num_hearts, // output number of hearts [0-3]
 		output wire [2:0] game_state, // output game state machine's state
 		output wire game_en,          // output signal asserted when game is in playing/hit states
 		output reg game_reset         // output signal asserted to reset game mechanics modules (see use in display_top)
-    );
+        );
 	
 	// positive edge detection for start button
 	reg start_reg;
@@ -24,10 +25,10 @@ module game_state_machine
 	
 	// symbolic state declarations
 	localparam [2:0] init     = 3'b000,  // state to idle while nes controller signals settle
-					 idle     = 3'b001,  // start screen 
-				     playing  = 3'b010,  // playing
-					 hit      = 3'b011,  // yoshi has been hit
-					 gameover = 3'b100;  // game over!
+			 idle     = 3'b001,  // start screen 
+		         playing  = 3'b010,  // playing
+			 hit      = 3'b011,  // yoshi has been hit
+			 gameover = 3'b100;  // game over!
 	
 	reg [2:0] game_state_reg, game_state_next; // FSM state register
 	reg [27:0] timeout_reg, timeout_next;      // timer register to time yoshi's invincibility post ghost collision
